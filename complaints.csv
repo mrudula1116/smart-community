@@ -1,0 +1,81 @@
+date,complaint,category
+2025-01-01,Garbage not collected for several days,Waste
+2025-01-02,Water leakage near the market,Water
+2025-01-03,Heavy traffic near school,Traffic
+2025-01-04,Street lights not working,Infrastructure
+2025-01-05,Overflowing garbage bins,Waste
+2025-01-06,Broken water pipeline,Water
+2025-01-07,Traffic congestion during peak hours,Traffic
+2025-01-08,Damaged road and potholes,Infrastructure
+2025-01-09,Garbage scattered across the street,Waste
+2025-01-10,Waste collection vehicle missed our area,Waste
+2025-01-11,Dustbins are overflowing near the park,Waste
+2025-01-12,Uncollected waste causing foul smell,Waste
+2025-01-13,Garbage accumulation attracting stray animals,Waste
+2025-01-14,Waste disposal area needs cleaning,Waste
+2025-01-15,Plastic waste dumped near river,Waste
+2025-01-16,Irregular garbage collection in our locality,Waste
+2025-01-17,Overflowing community waste container,Waste
+2025-01-18,Garbage burning causing pollution,Waste
+2025-01-19,Need more dustbins in residential area,Waste
+2025-01-20,Waste management services are poor,Waste
+2025-01-21,Water supply interrupted frequently,Water
+2025-01-22,Low water pressure in residential area,Water
+2025-01-23,Contaminated drinking water reported,Water
+2025-01-24,Water tank leakage in community center,Water
+2025-01-25,No water supply since morning,Water
+2025-01-26,Water pipeline damaged near highway,Water
+2025-01-27,Dirty water coming from taps,Water
+2025-01-28,Water logging due to drainage blockage,Water
+2025-01-29,Public water tap not functioning,Water
+2025-01-30,Leakage from underground water line,Water
+2025-02-01,Heavy traffic near shopping mall,Traffic
+2025-02-02,Traffic signal malfunctioning at junction,Traffic
+2025-02-03,Frequent traffic jams near flyover,Traffic
+2025-02-04,Illegal parking causing congestion,Traffic
+2025-02-05,School zone experiencing severe traffic,Traffic
+2025-02-06,Need traffic police during rush hour,Traffic
+2025-02-07,Traffic lights not synchronized properly,Traffic
+2025-02-08,Road construction causing traffic delays,Traffic
+2025-02-09,Vehicle congestion near railway station,Traffic
+2025-02-10,Traffic bottleneck at major intersection,Traffic
+2025-02-11,Street lights damaged on main road,Infrastructure
+2025-02-12,Road full of potholes causing accidents,Infrastructure
+2025-02-13,Broken footpath needs repair,Infrastructure
+2025-02-14,Public park equipment damaged,Infrastructure
+2025-02-15,Bus stop shelter requires maintenance,Infrastructure
+2025-02-16,Drainage system blocked during rain,Infrastructure
+2025-02-17,Damaged road divider creating hazard,Infrastructure
+2025-02-18,Bridge railing needs immediate repair,Infrastructure
+2025-02-19,Cracks appearing on public road,Infrastructure
+2025-02-20,Community hall infrastructure deteriorating,Infrastructure
+2025-02-21,Noise pollution from industrial area,Environment
+2025-02-22,Air quality is very poor today,Environment
+2025-02-23,Smoke emissions affecting residents,Environment
+2025-02-24,Trees being cut illegally,Environment
+2025-02-25,Water pollution observed in lake,Environment
+2025-02-26,Excessive dust from construction site,Environment
+2025-02-27,Need more green spaces in locality,Environment
+2025-02-28,River contaminated with waste materials,Environment
+2025-03-01,Industrial waste affecting environment,Environment
+2025-03-02,High pollution levels near highway,Environment
+2025-03-03,Stray dogs creating safety concerns,Public Safety
+2025-03-04,Street harassment reported in market area,Public Safety
+2025-03-05,Poor lighting causing security issues,Public Safety
+2025-03-06,Need police patrol in neighborhood,Public Safety
+2025-03-07,Abandoned building attracting criminals,Public Safety
+2025-03-08,Unsafe pedestrian crossing near school,Public Safety
+2025-03-09,Frequent theft incidents reported,Public Safety
+2025-03-10,Broken CCTV cameras in public area,Public Safety
+2025-03-11,Emergency response time is slow,Public Safety
+2025-03-12,Lack of security personnel in park,Public Safety
+2025-03-13,Public health center overcrowded,Healthcare
+2025-03-14,Need more doctors in local clinic,Healthcare
+2025-03-15,Vaccination camp required in community,Healthcare
+2025-03-16,Hospital waiting time is too long,Healthcare
+2025-03-17,Medical services unavailable at night,Healthcare
+2025-03-18,Lack of ambulance services nearby,Healthcare
+2025-03-19,Health awareness programs needed,Healthcare
+2025-03-20,Shortage of medicines in clinic,Healthcare
+2025-03-21,Need mobile healthcare unit,Healthcare
+2025-03-22,Community health center requires upgrades,Healthcare
