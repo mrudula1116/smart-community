@@ -223,6 +223,10 @@
                                         <input type="text" id="complaint-name" class="form-input" placeholder="Anonymous">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-label">Contact Info (Optional)</label>
+                                    <input type="text" id="complaint-contact" class="form-input" placeholder="Phone or email">
+                                </div>
                                 <button type="submit" class="btn btn-primary">🚀 Submit & Analyze</button>
                             </form>
                             
@@ -242,6 +246,18 @@
                                     <option value="Open">Open</option>
                                     <option value="In Progress">In Progress</option>
                                     <option value="Resolved">Resolved</option>
+                                </select>
+                                <select id="filter-category" class="form-select" onchange="loadComplaints()">
+                                    <option value="All">All Categories</option>
+                                    <option value="Infrastructure">Infrastructure</option>
+                                    <option value="Sanitation">Sanitation</option>
+                                    <option value="Public Health">Public Health</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Public Spaces">Public Spaces</option>
+                                    <option value="Environment">Environment</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Safety">Safety</option>
+                                    <option value="General">General</option>
                                 </select>
                                 <select id="filter-priority" class="form-select" onchange="loadComplaints()">
                                     <option value="All">All Priorities</option>

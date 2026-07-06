@@ -477,13 +477,14 @@ async function submitComplaint(event) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;border-width:2px;"></span> Submitting...';
     
+    const contactInput = form.querySelector('#complaint-contact');
     const data = {
         title: form.querySelector('#complaint-title').value,
         description: form.querySelector('#complaint-description').value,
         category: form.querySelector('#complaint-category').value,
         location: form.querySelector('#complaint-location').value,
         citizen_name: form.querySelector('#complaint-name').value || 'Anonymous',
-        citizen_contact: form.querySelector('#complaint-contact').value || '',
+        citizen_contact: contactInput ? contactInput.value : '',
     };
     
     // Create complaint
