@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">🏛️</div>
+                <div class="logo-text">
+                    <h1>CommunityPulse</h1>
+                    <span>Decision Intelligence</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Operations</div>
+                <div class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span> Command Dashboard
+                </div>
+                <div class="nav-item" data-page="complaints">
+                    <span class="nav-icon">📋</span> Complaint Analyzer
+                </div>
+                <div class="nav-item" data-page="emergency">
+                    <span class="nav-icon">🚨</span> Emergency Alerts
+                </div>
+                
+                <div class="nav-section-title">Intelligence</div>
+                <div class="nav-item" data-page="insights">
+                    <span class="nav-icon">🔍</span> Community Insights
+                </div>
+                <div class="nav-item" data-page="chat">
+                    <span class="nav-icon">🤖</span> AI Assistant
+                </div>
+                <div class="nav-item" data-page="reports">
+                    <span class="nav-icon">📈</span> Reports & Impact
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="ai-status">
+                    <div class="status-dot {% if not ai_enabled %}demo{% endif %}"></div>
+                    {% if ai_enabled %}Gemini AI Active{% else %}AI Demo Mode{% endif %}
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Emergency Ticker -->
+            <div id="emergency-ticker" class="emergency-ticker ticker-hidden">
+                <div class="ticker-label">
+                    <div class="pulse-dot"></div> ACTIVE ALERTS
+                </div>
+                <div class="ticker-content">
+                    <div class="ticker-scroll">
+                        <div class="ticker-item"><div class="severity-dot critical"></div> 🌧️ CRITICAL: Heavy Rainfall Warning — Flash Flood Alert. Stay indoors.</div>
+                        <div class="ticker-item"><div class="severity-dot high"></div> 🔥 HIGH: Heatwave Advisory — Temperature exceeding 45°C. Avoid outdoor activity 11 AM-4 PM.</div>
+                        <div class="ticker-item"><div class="severity-dot high"></div> 🦟 HIGH: Dengue Outbreak Alert — 47 confirmed cases in Zones 3 & 5. Eliminate stagnant water.</div>
+                        <!-- Duplicate for seamless scroll -->
+                        <div class="ticker-item"><div class="severity-dot critical"></div> 🌧️ CRITICAL: Heavy Rainfall Warning — Flash Flood Alert. Stay indoors.</div>
+                        <div class="ticker-item"><div class="severity-dot high"></div> 🔥 HIGH: Heatwave Advisory — Temperature exceeding 45°C. Avoid outdoor activity 11 AM-4 PM.</div>
+                        <div class="ticker-item"><div class="severity-dot high"></div> 🦟 HIGH: Dengue Outbreak Alert — 47 confirmed cases in Zones 3 & 5. Eliminate stagnant water.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Header -->
+            <header class="page-header">
+                <div class="page-title-section">
+                    <!-- Updated by JS -->
+                    <span class="page-icon">📊</span>
+                    <div>
+                        <h2>Command Dashboard</h2>
+                        <div class="page-subtitle">Real-time community intelligence overview</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="mobile-menu-toggle" id="mobile-menu-toggle">☰</button>
+                    <button class="btn btn-primary btn-sm" onclick="navigateTo('complaints')">
+                        <span style="font-size: 1.1rem; line-height: 1;">+</span> New Report
+                    </button>
+                    <div class="btn-icon">👤</div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- PAGE: Command Dashboard -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="page-dashboard" class="page-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="stat-card-header">
+                                <div class="stat-icon">📋</div>
+                                <div class="stat-trend up">↑ 12%</div>
+                            </div>
+                            <div class="stat-value" id="stat-total">0</div>
+                            <div class="stat-label">Total Complaints (30d)</div>
+                        </div>
+                        <div class="stat-card rose">
+                            <div class="stat-card-header">
+                                <div class="stat-icon">🚨</div>
+                                <div class="stat-trend neutral">→</div>
+                            </div>
+                            <div class="stat-value" id="stat-active-alerts">0</div>
+                            <div class="stat-label">Active Emergency Alerts</div>
+                        </div>
+                        <div class="stat-card emerald">
+                            <div class="stat-card-header">
+                                <div class="stat-icon">✅</div>
+                                <div class="stat-trend up">↑ 5%</div>
+                            </div>
+                            <div class="stat-value"><span id="stat-resolution-rate">0</span>%</div>
+                            <div class="stat-label">Resolution Rate</div>
+                        </div>
+                        <div class="stat-card purple">
+                            <div class="stat-card-header">
+                                <div class="stat-icon">🏘️</div>
+                                <div class="stat-trend up">↑ 2.3</div>
+                            </div>
+                            <div class="stat-value"><span id="wellbeing-value">0</span></div>
+                            <div class="stat-label">Community Wellbeing Score</div>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-grid">
+                        <div class="glass-card" style="grid-column: span 2;">
+                            <div class="card-header">
+                                <h3>📈 Complaint Trends</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-trend"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-grid">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3>📊 Category Distribution</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-categories"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3>🏢 Department Workload</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-departments"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3>⚡ Recent Activity</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul id="activity-feed" class="activity-feed">
+                                    <!-- Populated by JS -->
+                                    <div class="skeleton skeleton-stat"></div>
+                                    <div class="skeleton skeleton-stat mt-md"></div>
+                                    <div class="skeleton skeleton-stat mt-md"></div>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- PAGE: Complaint Analyzer -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="page-complaints" class="page-section">
+                    
+                    <div class="glass-card mb-xl">
+                        <div class="card-header">
+                            <h3>📝 File New Complaint</h3>
+                            <span class="badge medium">AI Routing Enabled</span>
+                        </div>
+                        <div class="card-body">
+                            <form id="complaint-form" onsubmit="submitComplaint(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" id="complaint-title" class="form-input" placeholder="Brief summary of the issue" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Category</label>
+                                        <select id="complaint-category" class="form-select">
+                                            <option value="Infrastructure">Infrastructure (Roads, Lights, Bridges)</option>
+                                            <option value="Sanitation">Sanitation & Waste Management</option>
+                                            <option value="Public Health">Water Supply & Public Health</option>
+                                            <option value="Transportation">Traffic & Transportation</option>
+                                            <option value="Public Spaces">Parks & Public Spaces</option>
+                                            <option value="Environment">Environment (Noise, Pollution)</option>
+                                            <option value="Healthcare">Healthcare Facilities</option>
+                                            <option value="Safety">Public Safety</option>
+                                            <option value="General">General/Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea id="complaint-description" class="form-textarea" placeholder="Provide detailed information about the problem..." required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Location / Address</label>
+                                        <input type="text" id="complaint-location" class="form-input" placeholder="e.g., MG Road, Sector 15">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Citizen Name (Optional)</label>
+                                        <input type="text" id="complaint-name" class="form-input" placeholder="Anonymous">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">🚀 Submit & Analyze</button>
+                            </form>
+                            
+                            <!-- Analysis Results Panel (Hidden by default) -->
+                            <div id="analysis-panel" class="analysis-panel hidden">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card">
+                        <div class="card-header" style="flex-wrap: wrap; gap: var(--space-md);">
+                            <h3>📋 Complaint Registry</h3>
+                            <div class="filter-bar">
+                                <select id="filter-status" class="form-select" onchange="loadComplaints()">
+                                    <option value="All">All Statuses</option>
+                                    <option value="Open">Open</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Resolved">Resolved</option>
+                                </select>
+                                <select id="filter-priority" class="form-select" onchange="loadComplaints()">
+                                    <option value="All">All Priorities</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Severity</th>
+                                        <th>Status</th>
+                                        <th>Department</th>
+                                        <th>Reported</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="complaints-table-body">
+                                    <tr>
+                                        <td colspan="7" class="text-center" style="padding: 24px;">
+                                            <div class="spinner"></div> Loading...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- PAGE: Emergency Alerts -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="page-emergency" class="page-section">
+                    <div class="charts-grid">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3>🚨 Issue Emergency Alert</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="alert-form" onsubmit="submitAlert(event)">
+                                    <div class="form-group">
+                                        <label class="form-label">Alert Title</label>
+                                        <input type="text" id="alert-title" class="form-input" placeholder="e.g., Heavy Rainfall Warning" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Type</label>
+                                            <select id="alert-type" class="form-select">
+                                                <option value="Weather">Severe Weather</option>
+                                                <option value="Health">Public Health</option>
+                                                <option value="Fire">Fire / Explosion</option>
+                                                <option value="Infrastructure">Infrastructure Failure</option>
+                                                <option value="Security">Security Incident</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Severity</label>
+                                            <select id="alert-severity" class="form-select">
+                                                <option value="Critical">Critical (Red Alert)</option>
+                                                <option value="High">High (Orange Alert)</option>
+                                                <option value="Medium">Medium (Yellow Alert)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Description / Details</label>
+                                        <textarea id="alert-description" class="form-textarea" placeholder="Detailed information about the emergency..." required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Affected Zones</label>
+                                        <input type="text" id="alert-zones" class="form-input" placeholder="e.g., Entire City, Coastal Areas">
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">🚨 Issue Alert & Generate Guidance</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div id="alerts-container">
+                                <!-- Populated by JS -->
+                                <div class="loading-overlay">
+                                    <div class="spinner"></div>
+                                    <p>Loading alerts...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- PAGE: Community Insights -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="page-insights" class="page-section">
+                    
+                    <div class="glass-card" style="margin-bottom: var(--space-xl); background: var(--gradient-hero);">
+                        <div class="card-body" style="padding-top: var(--space-lg); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                            <h2 style="font-size: 1.8rem; margin-bottom: var(--space-md); font-weight: 800;">Ask CommunityPulse AI</h2>
+                            <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); max-width: 600px;">
+                                Query community data in natural language. Try asking about complaint trends, predicting future issues, or analyzing department performance.
+                            </p>
+                            
+                            <form onsubmit="queryInsights(event)" style="width: 100%; max-width: 800px; position: relative;">
+                                <input type="text" id="insights-query" class="form-input" placeholder="e.g., What are the top infrastructure complaints this month?" style="padding: 16px 24px; font-size: 1.1rem; border-radius: var(--radius-full); background: rgba(12, 18, 41, 0.8); border: 1px solid var(--accent-primary);">
+                                <button type="submit" class="btn btn-primary" style="position: absolute; right: 8px; top: 8px; bottom: 8px; border-radius: var(--radius-full); padding: 0 24px;">Analyze</button>
+                            </form>
+                            
+                            <div class="chat-suggestions" style="justify-content: center; margin-top: var(--space-md);">
+                                <div class="chat-chip" onclick="document.getElementById('insights-query').value=this.innerText; queryInsights();">Predict complaint volume for next week</div>
+                                <div class="chat-chip" onclick="document.getElementById('insights-query').value=this.innerText; queryInsights();">Analyze department resolution times</div>
+                                <div class="chat-chip" onclick="document.getElementById('insights-query').value=this.innerText; queryInsights();">What is driving the wellbeing score?</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="insights-result" class="hidden mb-xl">
+                        <!-- Query results populated here -->
+                    </div>
+                    
+                    <div class="section-header">
+                        <h3>🔮 Predictive Analytics</h3>
+                    </div>
+                    
+                    <div id="predictions-container">
+                        <!-- Populated by JS -->
+                    </div>
+                    
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- PAGE: AI Assistant -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="page-chat" class="page-section">
+                    <div class="glass-card">
+                        <div class="chat-container">
+                            <div id="chat-messages" class="chat-messages">
+                                <!-- Populated by JS -->
+                            </div>
+                            
+                            <div class="chat-suggestions">
+                                <div class="chat-chip" onclick="useChatSuggestion('What are the critical issues right now?')">Critical issues right now?</div>
+                                <div class="chat-chip" onclick="useChatSuggestion('Give me a summary of emergency alerts.')">Summary of emergency alerts</div>
+                                <div class="chat-chip" onclick="useChatSuggestion('Which department has the most open complaints?')">Department workload</div>
+                            </div>
+                            
+                            <div class="chat-input-area">
+                                <div class="chat-input-wrapper">
+                                    <textarea id="chat-input" class="chat-input" placeholder="Message CommunityPulse AI..." rows="1"></textarea>
+                                </div>
+                                <button class="btn btn-primary" style="height: 44px; padding: 0 20px;" onclick="sendChatMessage()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- PAGE: Reports & Impact -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="page-reports" class="page-section">
+                    
+                    <div class="charts-grid mb-xl" style="grid-template-columns: 1fr 2fr;">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3>📊 Generate Report</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Report Type</label>
+                                    <select id="report-type" class="form-select">
+                                        <option value="Weekly Community Executive Summary">Weekly Executive Summary</option>
+                                        <option value="Monthly Department Performance Report">Department Performance Report</option>
+                                        <option value="Emergency Response Analysis">Emergency Response Analysis</option>
+                                        <option value="Social Impact Assessment">Social Impact Assessment</option>
+                                    </select>
+                                </div>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: var(--space-md);">
+                                    AI will analyze all current data and generate a comprehensive markdown report.
+                                </p>
+                                <button id="btn-generate-report" class="btn btn-primary w-100" style="width: 100%; justify-content: center;" onclick="generateReport()">📊 Generate Report</button>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3>📑 AI Report Output</h3>
+                            </div>
+                            <div id="report-output" class="card-body hidden" style="padding-bottom: var(--space-md);">
+                                <!-- Populated by JS -->
+                            </div>
+                            <div id="report-empty" class="card-body text-center" style="padding: var(--space-2xl);">
+                                <div style="font-size: 3rem; margin-bottom: var(--space-md); opacity: 0.3;">📝</div>
+                                <p style="color: var(--text-muted);">Select a report type and click generate to see AI analysis here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-header mt-xl">
+                        <h3>🌍 Social Impact Initiatives</h3>
+                    </div>
+                    
+                    <div id="impact-container" class="impact-grid">
+                        <!-- Populated by JS -->
+                        <div class="loading-overlay">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    
+                </section>
+
+            </div>
+        </main>
+    </div>
+    
+    <!-- ─── Modals ─── -->
+    
+    <!-- Complaint Detail Modal -->
+    <div id="complaintModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Complaint Details</h3>
+                <button class="btn-icon" onclick="closeModal('complaintModal')">×</button>
+            </div>
+            <div id="complaintModalBody" class="modal-body">
+                <!-- Populated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('complaintModal')">Close</button>
+                <button class="btn btn-primary" onclick="alert('Update status functionality to be implemented')">Update Status</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <script>
+        // Handle showing/hiding empty report state
+        document.getElementById('btn-generate-report')?.addEventListener('click', () => {
+            document.getElementById('report-empty')?.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
