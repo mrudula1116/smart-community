@@ -1,0 +1,11 @@
+# Python virtual environment
+venv/
+env/
+__pycache__/
+
+# Environment variables / Secrets
+.env
+
+# Node/React (if applicable)
+node_modules/
+.DS_Store
